@@ -23,6 +23,11 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    
+    roles = []
+    
+    for role in message.author.roles:
+        roles.append(role.name)
 
     if message.author.bot:
         return
@@ -30,16 +35,19 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('#swack process_log') and "<Role id=801913275909537813 name='Maker'>" in message.author.roles:
-        async with message.channel.typing():
-            processLog()
-        await message.reply("Processed Log")
-        await message.reply(file=discord.File('Swack.pdf'))
-        # await message.reply(file=discord.File('log.csv'))
-        return
+    if message.content.startswith('#swack process_log'):
+        if 'Incoming Committee' in roles or "Committee" in roles:
+            async with message.channel.typing():
+                processLog()
+            await message.reply("Processed Log")
+            await message.reply(file=discord.File('Swack.pdf'))
+            # await message.reply(file=discord.File('log.csv'))
+            return
+        else:
+            await message.reply("You do not have permission to use this command.")
+            return
 
     if not isinstance(message.channel, discord.DMChannel):
-        print(message.author.roles)
         log(message)
 
 

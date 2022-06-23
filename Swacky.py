@@ -30,7 +30,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('#swack process_log'):
+    if message.content.startswith('#swack process_log') and "<Role id=801913275909537813 name='Maker'>" in message.author.roles:
         async with message.channel.typing():
             processLog()
         await message.reply("Processed Log")
@@ -39,6 +39,7 @@ async def on_message(message):
         return
 
     if not isinstance(message.channel, discord.DMChannel):
+        print(message.author.roles)
         log(message)
 
 
@@ -53,7 +54,7 @@ def log(message):
     except:
         pass
 
-    data = df.append({'content': message.content, 'author': message.author.nick,
+    data = df.append({'content': message.content, 'author': message.author.display_name,
                       'timestamp': message.created_at, 'id': message.author.id}, ignore_index=True)
 
     # Remove emojis from the messages only

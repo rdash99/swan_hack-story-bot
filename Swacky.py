@@ -35,11 +35,11 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('#swack process_log'):
+    if message.content.startswith('#swack process_messages'):
         if 'Incoming Committee' in roles or "Committee" in roles:
             async with message.channel.typing():
                 processLog()
-            await message.reply("Processed Log")
+            await message.reply("Processed Messages")
             await message.reply(file=discord.File('Swack.pdf'))
             # await message.reply(file=discord.File('log.csv'))
             return

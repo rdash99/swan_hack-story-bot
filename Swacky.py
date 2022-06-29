@@ -61,9 +61,11 @@ def log(message):
         df = pd.read_csv('log.csv')
     except:
         pass
+    
+    frame = pd.DataFrame({'content': message.content, 'author': message.author.display_name,
+                      'timestamp': message.created_at, 'id': message.author.id}, index=[0])
 
-    data = df.append({'content': message.content, 'author': message.author.display_name,
-                      'timestamp': message.created_at, 'id': message.author.id}, ignore_index=True)
+    data = pd.concat((df, frame))
 
     # Remove emojis from the messages only
     data['content'] = data['content'].apply(lambda x: x.encode(
